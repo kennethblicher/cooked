@@ -67,7 +67,13 @@ ul {
   margin-left: 45%;
   margin-right: 45%;
   margin-top: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+}
+
+#createText {
+  font-weight: bold;
+  font-size: 30px;
+  font-family: Calibri;
 }
 
 select {
