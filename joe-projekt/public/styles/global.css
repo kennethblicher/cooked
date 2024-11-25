@@ -1,9 +1,9 @@
 body {
   margin: 0px;
+  font-family: Calibri;
 }
 
 ul {
-    font-family: Calibri;
     list-style-type: none;
     margin: 0;
     padding: 0;
