@@ -14,11 +14,13 @@
     <li><img src="/joe-projekt/public/img/joeLogo.svg" alt="Logo"></li>
   </ul>
   <div class="center">
-    <p id="createText">Opret en bruger</p>
-    <input type="text" id="nummerInput" placeholder="Telefonnummer">
-    <button id="signupCreate" onclick="window.location.href='/joe-projekt/public/2FA.html'">Fortsæt</button>
-
-</div>
+    <p id="createText">Oprettelse af bruger</p>
+    <input type="email" id="emailInput" placeholder="Email" required>
+    <input type="password" id="passwordInput" placeholder="Adgangskode" required>
+    <input type="password" id="repeatPasswordInput" placeholder="Gentag adgangskode" required>
+    <button id="signupButton" class="signup-button1">Opret bruger</button>
+    <p id="errorMessage" style="color: red; display: none;">Adgangskoderne stemmer ikke overens!</p>
+  </div>
 </body>
 
 <script src="/joe-projekt/public/scripts/index.js"></script>

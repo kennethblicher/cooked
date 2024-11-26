@@ -258,6 +258,8 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 });
 
+// -------------------------------- SIGNUP.HTML --------------------------
+
 // Find login-knappen
 const loginButton = document.getElementById('loginButton');
 
@@ -265,4 +267,35 @@ const loginButton = document.getElementById('loginButton');
 loginButton.addEventListener('click', () => {
   // Naviger til register.html
   window.location.href = '/joe-projekt/public/signup.html';
+});
+
+// Find knappen
+const continueButton = document.getElementById('continueButton');
+
+// ---------------------- 2FA.HTML -----------------------------
+
+// Tilføj en klik-hændelse til knappen
+continueButton.addEventListener('click', () => {
+  // Naviger til den ønskede side
+  window.location.href = '/joe-projekt/public/2FA.html';
+});
+
+// ---------------------- Brugeroplysninger.html -------------------------------
+
+// Find elementerne
+const signupButton = document.getElementById('signupButton');
+const passwordInput = document.getElementById('passwordInput');
+const repeatPasswordInput = document.getElementById('repeatPasswordInput');
+const errorMessage = document.getElementById('errorMessage');
+
+// Tilføj klik-hændelse til "Opret bruger"-knappen
+signupButton.addEventListener('click', () => {
+  // Tjek om adgangskoderne matcher
+  if (passwordInput.value !== repeatPasswordInput.value) {
+    errorMessage.style.display = 'block'; // Vis fejlbesked
+  } else {
+    errorMessage.style.display = 'none'; // Skjul fejlbesked
+    // Naviger til næste side
+    window.location.href = '/joe-projekt/public/2FA.html';
+  }
 });
