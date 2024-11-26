@@ -257,3 +257,12 @@ document.addEventListener('DOMContentLoaded', function () {
           console.error('Error:', error);
       });
 });
+
+// Find login-knappen
+const loginButton = document.getElementById('loginButton');
+
+// Tilføj en klik-hændelse
+loginButton.addEventListener('click', () => {
+  // Naviger til register.html
+  window.location.href = '/joe-projekt/public/signup.html';
+});

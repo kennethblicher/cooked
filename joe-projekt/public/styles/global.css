@@ -43,22 +43,32 @@ ul {
 } */
 
 .center {
+  margin: 0px;
   padding-top: 50px;
   display: flex;
   justify-content: center;
   flex-direction: column;
   text-align: center;
+  gap: 20px; /* Angiver afstand mellem knapper */
 }
+
 
 .center button {
   border: 2px solid black;
   border-radius: 10px;
-  padding: 10px;
-  margin-left: 45%;
-  margin-right: 45%;
+  padding: 0; /* Fjern unødvendig indvendig polstring */
+  font-size: 25px; /* Øger teksten i knapperne */
+  width: 250px; /* Gør knapperne bredere */
+  height: 80px; /* Gør knapperne højere */
   background-color: #f7c1d9;
   font-weight: bold;
+  margin: 10px auto; /* Tilføjer afstand og centrerer knapperne */
+  display: flex; /* Gør det muligt at centrere indhold */
+  justify-content: center; /* Centrerer teksten vandret */
+  align-items: center; /* Centrerer teksten lodret */
 }
+
+
 
 .center input {
   border: 2px solid black;
@@ -69,6 +79,56 @@ ul {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
+/* Standard styling for signup-button */
+.signup-button {
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 5px 10px; /* Mindre indre polstring */
+  font-size: 14px; /* Mindre tekststørrelse */
+  width: 150px; /* Mindre bredde */
+  height: 40px; /* Mindre højde */
+  background-color: #f7c1d9;
+  font-weight: bold;
+  margin: 10px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#nummerInput {
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 0; /* Fjern indre polstring, så line-height fungerer korrekt */
+  width: 240px; /* Gør feltet bredere */
+  font-size: 16px; /* Øger teksten i feltet */
+  height: 40px; /* Gør feltet højere */
+  line-height: 50px; /* Matcher højden for at centrere teksten lodret */
+  margin: 10px auto; /* Centrerer feltet og tilføjer afstand */
+  text-align: center; /* Centrerer teksten vandret */
+  display: block; /* Sikrer, at det tager sin egen linje */
+}
+
+#nummerInput::placeholder {
+  text-align: center; /* Centrerer placeholderen vandret */
+}
+
+
+
+/* Sørg for at overskrive globale knapregler */
+.center .signup-button {
+  font-size: 14px !important; /* Tvinger mindre tekststørrelse */
+  width: 150px !important; /* Tvinger mindre bredde */
+  height: 40px !important; /* Tvinger mindre højde */
+}
+
+
+/* Sørg for at overskrive globale knapregler */
+.center .signup-button {
+  width: 240px !important; /* Tvinger bredden til at ændre sig */
+  height: 50px !important; /* Tvinger højden til at ændre sig */
+}
+
 
 #createText {
   font-weight: bold;
