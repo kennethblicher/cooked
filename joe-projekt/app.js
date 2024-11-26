@@ -4,6 +4,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
 const responseTime = require('response-time')
+const sqlite3 = require('sqlite3').verbose();
 const app = express();
 
 app.use(cors());
@@ -109,44 +110,42 @@ app.post("/email", async (req, res) => {
   }
 });
 
+const db = new sqlite3.Database('./DB.js');
 
-const customers = [
-  {
-    username: "hans",
-    email: "hanshansen@gmail.com",
-    password: "hansemanse",
-  },
-  {
-    username: "jens",
-    email: "hanshansen@gmail.com",
-    password: "hansemanse",
-  },
-];
-
-
-app.get("/customers", (req, res) => {
-  res.json(customers);
+app.get("/customer", (req, res) => {
+  db.all("SELECT phone_number, password FROM database", [], (err, rows) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    res.json(rows);
+  });
 });
 
-
 app.post("/login", (req, res) => {
-  const { username, password } = req.body;
+  const { phone_number, password } = req.body;
   console.log(req.body);
 
-  const customer = customers.find(
-    (user) => user.username === username && user.password === password
-  );
+  const query = "SELECT username FROM customers WHERE phone_number = ? AND password = ?";
+  db.get(query, [phone_number, password], (err, row) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
 
-  if (customer) {
-    res
-      .cookie("userAuth", username, {
-        maxAge: 3600000,
-      })
-      .send({ message: "Du er blevet logget ind" })
-      .status(200);
-  } else {
-    res.status(401).send({ message: "Forkert brugernavn eller adgangskode" });
-  }
+    if (row) {
+      res
+        .cookie("userAuth", row.phone_number, {
+          maxAge: 3600000,
+        })
+        .send({ message: "Du er blevet logget ind" })
+        .status(200);
+    } else {
+      res.status(401).send({ message: "Forkert telefonnummer eller adgangskode" });
+    }
+  });
 });
 
 
