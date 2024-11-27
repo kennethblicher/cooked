@@ -28,7 +28,8 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.get("/products", (req, res  ) => {  
+
+app.get("/productsPictures", (req, res  ) => {  
   const serverUri = `${req.protocol}://${req.get('host')}`;
   const products = [
     {
@@ -76,6 +77,17 @@ app.get('/Brugeroplysninger', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'Brugeroplysninger.html'));
 });
 
+app.get('/index', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/products', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'products.html'));
+});
+
+
+
+
 
 
 app.get("/res", (req, res) => {
@@ -87,6 +99,77 @@ app.get("/cookie", (req, res) => {
   res.send("Cookie set");
 });
 
+
+const twilio = require("twilio");
+
+const accountSid = "AC789d4a67dd55c1d86d4a4141cd240361";
+const authToken = "e3638f3c7f71d76b4a811011e0b45214";
+const client = twilio(accountSid, authToken);
+const realCodeStorage = new Map();
+
+app.use(express.json());
+
+app.post("/send-2fa", async (req, res) => {
+  const { tlfNumber } = req.body;
+
+  if (!tlfNumber) {
+    return res.status(400).send({ message: "Phone number is required" });
+  }
+
+  try {
+    const digits = Array.from({ length: 6 }, () =>
+      Math.floor(Math.random() * 10).toString()
+    ).join("");
+
+    // Store the generated code temporarily
+    realCodeStorage.set(tlfNumber, digits);
+
+    // Set a timeout to delete the code after 5 minutes (300,000 ms)
+    setTimeout(() => {
+      realCodeStorage.delete(tlfNumber);
+      console.log(`Code for ${tlfNumber} expired.`);
+    }, 5 * 60 * 1000);
+
+    // Send the code via Twilio SMS
+    await client.messages.create({
+      from: "+18504006662",
+      to: tlfNumber,
+      body: `Hej! Din bekræftelseskode er ${digits}`,
+    });
+
+    console.log(`Generated code for ${tlfNumber}:`, digits);
+
+    res.send({ message: "Code sent" });
+  } catch (error) {
+    console.error("Error sending message:", error);
+    res.status(500).send({ message: "Failed to send code" });
+  }
+});
+
+// Endpoint to verify the 2FA code
+app.post("/verify-2fa", (req, res) => {
+  const { tlfNumber, userCode } = req.body;
+
+  if (!tlfNumber || !userCode) {
+    return res.status(400).send({ message: "Phone number and code are required" });
+  }
+
+  // Retrieve the stored code for the given phone number
+  const realCode = realCodeStorage.get(tlfNumber);
+
+  if (!realCode) {
+    return res.status(400).send({ message: "Verification code expired or not found." });
+  }
+
+  if (userCode === realCode) {
+    // Success: Code matches
+    realCodeStorage.delete(tlfNumber); // Remove the code after successful verification
+    res.send({ message: "Code verified successfully!" });
+  } else {
+    // Failure: Code does not match
+    res.status(401).send({ message: "Incorrect verification code." });
+  }
+});
 
 
 // Nedstående kode gør x

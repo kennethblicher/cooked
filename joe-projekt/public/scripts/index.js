@@ -160,7 +160,7 @@ async function sendEmail() {
   }
 }
 
-async function fetchProducts() {
+async function displayProducts() {
   try {
     const response = await fetch('/products');
     if (!response.ok) {
