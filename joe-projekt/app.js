@@ -59,9 +59,24 @@ app.get("/products", (req, res  ) => {
   res.json(products);
 });
 
-app.get("/locations", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "locations.html"));
+
+app.get('/signup', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'signup.html'));
 });
+
+app.get('/register', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'register.html'));
+});
+
+app.get('/2FA', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', '2FA.html'));
+});
+
+app.get('/Brugeroplysninger', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Brugeroplysninger.html'));
+});
+
+
 
 app.get("/res", (req, res) => {
   res.send("Response message from server");

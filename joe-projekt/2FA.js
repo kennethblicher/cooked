@@ -20,9 +20,25 @@ async function createText(modtager) {
   });
 
   console.log(message);
+  return finalDigits
 }
 const tlfNumber = document.getElementById("signupCreate").value;
 console.log(tlfNumber)
 
+
+function check2FA() {
+  // Get the input value from the element with id "gg"
+  const inputValue = document.getElementById("validate2FA").value;
+  console.log(inputValue)
+  
+  // Check if the input matches "finalDigits"
+  //if (inputValue === finalDigits) {
+    // Redirect to the 2FA page if the input matches
+    window.location.href = './static/2FA.html';
+ // } else {
+    // Display an error message or take alternative action if it doesn't match
+   // alert("The input does not match. Please try again.");
+  }
+//}
 
 createText(tlfNumber);
