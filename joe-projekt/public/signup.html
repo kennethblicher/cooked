@@ -5,23 +5,25 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/joe-projekt/public/styles/global.css">
+  <!-- Link til lokal stylesheet -->
+  <link rel="stylesheet" href="./static/styles/global.css">
   <title>JOE and The Juice</title>
 </head>
 
 <body>
   <ul>
-    <li><img src="/joe-projekt/public/img/joeLogo.svg" alt="Logo"></li>
+    <!-- Opdateret logo link -->
+    <li><img src="./static/img/joeLogo.svg" alt="Logo"></li>
   </ul>
   <div class="center">
     <p id="createText">Opret en bruger</p>
     <input type="text" id="nummerInput" placeholder="Telefonnummer">
-    <button id="signupCreate" onclick="window.location.href='/joe-projekt/public/2FA.html'">Fortsæt</button>
-
-</div>
+    <!-- Ændret knap-link -->
+    <button id="signupCreate" onclick="window.location.href='./static/2FA.html'">Fortsæt</button>
+  </div>
 </body>
 
-<script src="/joe-projekt/2FA.js"></script>
-
+<!-- Opdateret script-sti -->
+<script src="./static/2FA.js"></script>
 
 </html>
