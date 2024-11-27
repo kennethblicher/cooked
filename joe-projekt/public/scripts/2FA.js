@@ -1,9 +1,62 @@
-let realCode = 0;
 async function check2FA() {
+  const tlfNumber = document.getElementById('nummerInput').value;
+  try {
+    // Make a POST request to the server
+    const response = await fetch('http://localhost:4000/send-2fa', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tlfNumber }),
+    });
+
+    // Check if the response is successful
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to send verification code');
+    }
+
+    sessionStorage.setItem('tlfNumber', tlfNumber);
+    window.location.href = "/2FA";
+  } catch (error) {
+    // Handle any errors that occur
+    console.error('Error sending verification:', error.message);
+    alert(`Error: ${error.message}`);
+  }
+}
+async function handle2FA() {
+  const userCode = document.getElementById('2FaInput').value;
+  const tlfNumber = sessionStorage.getItem('tlfNumber');
+
+  try {
+    const response = await fetch('http://localhost:4000/verify-2fa', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tlfNumber, userCode }),
+    });
+
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to verify code');
+    }
+
+    const data = await response.json();
+
+    // Redirect if verification is approved
+    if (data.status === 'approved') {
+      window.location.href = "/index.html";
+    } else {
+      throw new Error('Verification failed');
+    }
+  } catch (error) {
+    // Handle any errors that occur
+    console.error('Error verifying code:', error.message);
+    alert(`Error: ${error.message}`);
+  }
+}
+
+/*async function check2FA() {
   const tlfNumber = document.getElementById("nummerInput").value;
-
 console.log(tlfNumber)
-
   try {
     const response = await fetch("http://localhost:4000/send-2fa", {
       method: "POST",
@@ -22,8 +75,7 @@ console.log(tlfNumber)
     console.log(realCode);
     alert("2FA code sent!");
     //window.location.href = "/2FA";
-    console.log("Generated code:", data.code);
-    sessionStorage.setItem("realCode", realCode);
+
     return realCode
   } catch (error) {
     console.error("Error:", error);
@@ -63,4 +115,4 @@ async function handle2FA() {
     console.error("Error:", error);
     alert("Failed to verify the code. Please try again.");
   }
-}
+}*/

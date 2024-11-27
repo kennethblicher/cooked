@@ -5,6 +5,10 @@ const cookieParser = require("cookie-parser");
 const responseTime = require('response-time')
 const sqlite3 = require('sqlite3').verbose();
 const app = express();
+const bodyParser = require('body-parser');
+const twilio = require("twilio");
+
+
 
 const db = new sqlite3.Database("./db.sqlite");
 
@@ -22,6 +26,7 @@ app.use((req, res, next) => {
 app.use(cookieParser());
 app.use(express.json());
 app.use(responseTime())
+app.use(bodyParser.json());
 
 
 app.get("/", (req, res) => {
@@ -100,16 +105,42 @@ app.get("/cookie", (req, res) => {
 });
 
 
-const twilio = require("twilio");
 
 const accountSid = "AC789d4a67dd55c1d86d4a4141cd240361";
 const authToken = "e3638f3c7f71d76b4a811011e0b45214";
+const TWILIO_VERIFY_SERVICE_SID = 'your_verify_service_sid'
 const client = twilio(accountSid, authToken);
-const realCodeStorage = new Map();
 
 app.use(express.json());
 
-app.post("/send-2fa", async (req, res) => {
+app.post('/send-2fa', async (req, res) => {
+  const { tlfNumber } = req.body;
+
+  const verification = await client.verify.v2
+    .services(TWILIO_VERIFY_SERVICE_SID)
+    .verifications.create({
+      to: tlfNumber,
+      channel: 'sms',
+    });
+
+  res.send({ status: verification.status });
+});
+
+// Verify the code
+app.post('/verify-2fa', async (req, res) => {
+  const { tlfNumber, userCode } = req.body;
+
+  const verificationCheck = await client.verify.v2
+    .services(TWILIO_VERIFY_SERVICE_SID)
+    .verificationChecks.create({
+      to: tlfNumber,
+      code: userCode,
+    });
+
+  res.send({ status: verificationCheck.status });
+});
+
+/*app.post("/send-2fa", async (req, res) => {
   const { tlfNumber } = req.body;
 
   if (!tlfNumber) {
@@ -169,7 +200,7 @@ app.post("/verify-2fa", (req, res) => {
     // Failure: Code does not match
     res.status(401).send({ message: "Incorrect verification code." });
   }
-});
+});*/
 
 
 // Nedstående kode gør x
