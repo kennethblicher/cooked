@@ -102,7 +102,7 @@ ul {
   padding: 0; /* Fjern indre polstring, så line-height fungerer korrekt */
   width: 240px; /* Gør feltet bredere */
   font-size: 16px; /* Øger teksten i feltet */
-  height: 40px; /* Gør feltet højere */
+  height: 60px; /* Gør feltet højere */
   line-height: 50px; /* Matcher højden for at centrere teksten lodret */
   margin: 10px auto; /* Centrerer feltet og tilføjer afstand */
   text-align: center; /* Centrerer teksten vandret */
@@ -186,7 +186,7 @@ select {
 }
 
 /* Styling til nye inputfelter */
-#emailInput, #passwordInput, #repeatPasswordInput {
+#emailInput, #passwordInput, #repeatPasswordInput, #nameInput {
   border: 2px solid black;
   border-radius: 10px;
   padding: 10px;
@@ -203,3 +203,27 @@ select {
   margin-top: 10px;
 }
 
+#FaInput{
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 10px;
+  width: 220px;
+  font-size: 16px;
+  height: 40px;
+  margin: 10px auto;
+  text-align: center;
+  display: block;
+}
+
+#nummerInput1 {
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 0; /* Fjern indre polstring, så line-height fungerer korrekt */
+  width: 260px; /* Gør feltet bredere */
+  font-size: 16px; /* Øger teksten i feltet */
+  height: 60px; /* Gør feltet højere */
+  line-height: 50px; /* Matcher højden for at centrere teksten lodret */
+  margin: 10px auto; /* Centrerer feltet og tilføjer afstand */
+  text-align: center; /* Centrerer teksten vandret */
+  display: block; /* Sikrer, at det tager sin egen linje */
+}

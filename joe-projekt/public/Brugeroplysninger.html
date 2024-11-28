@@ -15,14 +15,16 @@
   </ul>
   <div class="center">
     <p id="createText">Oprettelse af bruger</p>
+
+    <input type="name" id="nameInput" placeholder="Navn" required>
     <input type="email" id="emailInput" placeholder="Email" required>
     <input type="password" id="passwordInput" placeholder="Adgangskode" required>
     <input type="password" id="repeatPasswordInput" placeholder="Gentag adgangskode" required>
-    <button id="signupButton" class="signup-button1">Opret bruger</button>
+    <button id="signupButton" class="signup-button1" onclick="userInput()">Opret bruger</button>
     <p id="errorMessage" style="color: red; display: none;">Adgangskoderne stemmer ikke overens!</p>
   </div>
 </body>
 
-<script src="/joe-projekt/public/scripts/index.js"></script>
+<script src="static/scripts/brugeroplysninger.js"></script>
 
 </html>
