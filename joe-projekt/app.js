@@ -9,11 +9,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const twilio = require("twilio");
 const bcrypt = require('bcrypt');
-// Ift webtoken
-// require('dotenv').config();
-const jwtSecret = process.env.JWT_SECRET;
-const jwtExpiration = process.env.JWT_EXPIRATION || '1h';
 
+const crypto = require('crypto'); // Til at generere en unik sessions-id
 
 
 
@@ -72,8 +69,15 @@ app.get('/index', (req, res) => {
 
 app.get('/products', (req, res) => {
 
-  res.sendFile(path.join(__dirname, 'products', 'products.html'));
+  res.sendFile(path.join(__dirname, 'public', 'products.html'));
 });
+
+app.get('/tutorials', (req, res) => {
+
+  res.sendFile(path.join(__dirname, 'public', 'tutorials.html'));
+});
+
+
 
 
 
@@ -116,11 +120,21 @@ app.post('/loginUser', (req, res) => {
           console.log('Password validation result:', isPasswordValid); // Debugging log
 
           if (isPasswordValid) {
-            // Generer JTW-token
-            const token = jwt.sign(
-            {id: row.id, number }, // Payload
-            jwtSecret, // Secret Key
-            {expiresIn: jwtExpiration || '1h'}) // Expires in 1 hour
+            // Generer en unik sessions-id
+            const sessionId = crypto.randomBytes(16).toString('hex');
+    
+            // Gem sessionen i serverens hukommelse (eller database)
+            // Her bruger vi en simpel in-memory session til eksemplet
+            sessions[sessionId] = { userId: row.id, number };
+    
+            // Sæt session-id som en cookie
+            res.cookie('sessionId', sessionId, {
+              httpOnly: true, // Forhindrer adgang via JavaScript
+              secure: false, // Sæt til true i produktion med HTTPS
+              maxAge: 3600000, // 1 time
+              sameSite: 'Strict', // Beskyt mod CSRF
+            });
+
 
               console.log(`User with number ${number} successfully logged in`); // Debugging log
               return res.status(200).send({ message: 'Login successful' });
@@ -259,32 +273,37 @@ app.get("/protected", (req, res) => {
 
 
 
-/*// middelware ift webtoken!
-const jwt = require('jsonwebtoken');
 
-function authenticateToken(req, res, next) {
-  const token = req.headers['authorization']?.split(' ')[1];
+// COOKIES!
+const sessions = {}; // Simpel in-memory session (kan erstattes med database)
 
-  if (!token) {
-    return res.status(401).send({ message: 'No token provided' });
+function authenticateSession(req, res, next) {
+  const sessionId = req.cookies.sessionId;
+
+  if (!sessionId || !sessions[sessionId]) {
+    return res.status(401).send({ message: 'Not authenticated' });
   }
 
-  jwt.verify(token, jwtSecret, (error, user) => {
-    if (error) {
-      return res.status(403).send({ message: 'Invalid token' });
-    }
-    req.user = user;
-    next();
-  });
+  // Gem brugerdata i request-objektet
+  req.user = sessions[sessionId];
+  next();
 }
-// Beskyt ruten med token  
-app.get('/protected', authenticateToken, (req, res) => {
-  res.send(`Welcome, user with ID: ${req.user.id}`);
+
+app.get('/protected', authenticateSession, (req, res) => {
+  res.send(`Welcome, user with ID: ${req.user.userId}`);
 });
 
 
-*/
+app.post('/logout', (req, res) => {
+  const sessionId = req.cookies.sessionId;
 
+  if (sessionId) {
+    delete sessions[sessionId]; // Fjern sessionen fra serveren
+    res.clearCookie('sessionId'); // Fjern cookien
+  }
+
+  res.status(200).send({ message: 'Logged out successfully' });
+});
 
 
 
