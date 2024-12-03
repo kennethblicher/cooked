@@ -1,34 +1,73 @@
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database("./db.sqlite");
-const express = require('express');
-const app = express();
-const path = require('path');
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
+const cloudinary = require("cloudinary").v2;
+const sqlite3 = require("sqlite3").verbose();
 
-// Skal indsætte produkter i databasen her
-
-// Henter produkter fra databasen
-function getProducts(req, res) {
-  db.all("SELECT name, image, price FROM products", (err, rows) => {
-    if (err) {
-      return console.error(err.message);
-    }
-    res.json(rows);
-  });
-}
-
-module.exports = {
-  insertProducts,
-  getProducts
-};
-
-app.get("/products", getProducts);
-
-// Serve the products.html file
-app.get('/products.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'products.html'));
+cloudinary.config({
+  cloud_name: "djskwgibn", // cloud_name
+  api_key: "815471325232252", // api_key
+  api_secret: "QcT6ufvgA1TubTkevgXbGmSa49Y", // api_secret
+  secure: true,
 });
 
-// Serve static files
-app.use('/static', express.static(path.join(__dirname, 'public', 'static')));
+// SQLite3 er en database, der gemmer data i en fil
+const db = new sqlite3.Database("./db.sqlite");
+
+// Opretter en tabel som indeholder primærnøgle id, url, tidspunkt og caption
+db.serialize(() => {
+  db.run(
+    "CREATE TABLE if not exists products (id integer primary key, url text not null, datetime integer, caption text)"
+  );
+});
+
+// Funktion til at køre en SQLite "run" query
+const runQuery = (query, params) => {
+  return new Promise((resolve, reject) => {
+    db.run(query, params, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+// Funktion til at køre en SQLite "all" query
+const allQuery = (query, params = []) => {
+  return new Promise((resolve, reject) => {
+    db.all(query, params, (error, rows) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+};
+
+async function upload(file) {
+  const uploadOptions = {
+    public_id: "cdn-example/" + file.split(".")[0],
+    resource_type: "auto",
+  };
+  try {
+    const result = await cloudinary.uploader.upload(file, uploadOptions);
+    await runQuery(
+      "INSERT INTO uploads (url, datetime, caption) VALUES (?, ?, ?)",
+      [result.secure_url, Date.now(), result.original_filename]
+    );
+    console.log(result);
+    getUploads();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function getUploads() {
+  try {
+    const uploads = await allQuery("SELECT * FROM uploads");
+    console.log("Data from SQLite database:");
+    console.log(uploads);
+  } catch (error) {
+    console.error(`Error: `, error.message);
+  }
+}

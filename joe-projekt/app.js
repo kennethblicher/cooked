@@ -71,14 +71,10 @@ app.get('/index', (req, res) => {
 });
 
 app.get('/products', (req, res) => {
-<<<<<<< Updated upstream
+
   res.sendFile(path.join(__dirname, 'products', 'products.html'));
 });
-=======
-  res.sendFile(path.join(__dirname, 'public', 'products.html'));
-});
 
->>>>>>> Stashed changes
 
 
 // Serve static files
@@ -217,12 +213,7 @@ app.post("/registerUser", async (req, res) => {
       INSERT INTO customers (phone_number, password, name, email)
       VALUES (?, ?, ?, ?)
     `;
-<<<<<<< Updated upstream
-
-    db.run(query, [email], function (err) {
-=======
     db.run(query, [tlfNumber, passwordHash, name, email], function (err) {
->>>>>>> Stashed changes
       if (err) {
         // Handle potential errors, such as duplicate phone numbers
         if (err.code === "SQLITE_CONSTRAINT") {
