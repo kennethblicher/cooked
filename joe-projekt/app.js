@@ -60,16 +60,9 @@ app.get('/index', (req, res) => {
 });
 
 app.get('/products', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'products.html'));
+  res.sendFile(path.join(__dirname, 'products', 'products.html'));
 });
-/*
-// Route to get all products
-app.get("/products", getProducts);
-*/
-// Serve the products.html file
-app.get('/products.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'products.html'));
-});
+
 
 // Serve static files
 app.use('/static', express.static(path.join(__dirname, 'public', 'static')));
@@ -117,7 +110,7 @@ app.post('/verify-2fa', async (req, res) => {
 
 
 
-// Endpoint to register a user som indsætter data til databasen, og haser password
+// Endpoint to register a user som indsætter data til databasen, og hasher password
 app.post("/registerUser", async (req, res) => {
   const { tlfNumber, password, name, email } = req.body;
 
@@ -131,11 +124,11 @@ app.post("/registerUser", async (req, res) => {
       VALUES (?, ?, ?, ?)
     `;
 
-    db.run(query, [tlfNumber, passwordHash, name, email], function (err) {
+    db.run(query, [email], function (err) {
       if (err) {
         // Handle potential errors, such as duplicate phone numbers
         if (err.code === "SQLITE_CONSTRAINT") {
-          res.status(409).send({ message: "Telefonnummeret eksisterer allerede" });
+          res.status(409).send({ message: "Email eksisterer allerede" });
         } else {
           console.error("Database error:", err.message);
           res.status(500).send({ message: "Internal Server Error" });

@@ -58,7 +58,9 @@ async function setCookie() {
       cookieDom.innerHTML = `<p>Error: ${error.message}</p>`;
     }
 }
-
+/*************************************
+ * Skal vel slettes?
+ */
 // funktion til at hente placering
 async function getLocation() {
   const dropdown = document.getElementById('locationDropdown');
