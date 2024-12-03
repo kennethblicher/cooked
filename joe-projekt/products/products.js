@@ -1,56 +1,12 @@
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database("./db.sqlite");
+const express = require('express');
+const app = express();
+const path = require('path');
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 
-// Function to insert products into the database
-function insertProducts() {
-  const products = [
-    {
-      navn: "Orange Juice",
-      image: "/static/img/orange_juice.jpg",
-      pris: 20
-    },
-    {
-      navn: "Apple Juice",
-      image: "/static/img/apple_juice.jpg",
-      pris: 20
-    },
-    {
-      navn: "Grape Juice",
-      image: "/static/img/grapes.jpg",
-      pris: 25
-    },
-    {
-      navn: "Pineapple Juice",
-      image: "/static/img/pineapple_juice.jpg",
-      pris: 25
-    },
-    {
-      navn: "Espresso",
-      image: "/static/img/espresso.jpg",
-      pris: 35
-    },
-    {
-      navn: "Cappuccino",
-      image: "/static/img/cappuccino.jpg",
-      pris: 35
-    }
-  ];
-
-  insertProducts();
-
-  products.forEach(product => {
-    db.run(
-      `INSERT INTO products (name, image, price) VALUES (?, ?, ?)`,
-      [product.navn, product.image, product.pris],
-      function(err) {
-        if (err) {
-          return console.log(err.message);
-        }
-        console.log(`A row has been inserted with rowid ${this.lastID}`);
-      }
-    );
-  });
-}
+// Skal indsætte produkter i databasen her
 
 // Henter produkter fra databasen
 function getProducts(req, res) {

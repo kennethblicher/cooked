@@ -214,6 +214,18 @@ select {
   text-align: center;
   display: block;
 }
+#numberInput {
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 0; /* Fjern indre polstring, så line-height fungerer korrekt */
+  width: 260px; /* Gør feltet bredere */
+  font-size: 16px; /* Øger teksten i feltet */
+  height: 60px; /* Gør feltet højere */
+  line-height: 50px; /* Matcher højden for at centrere teksten lodret */
+  margin: 10px auto; /* Centrerer feltet og tilføjer afstand */
+  text-align: center; /* Centrerer teksten vandret */
+  display: block; /* Sikrer, at det tager sin egen linje */
+}
 
 #nummerInput1 {
   border: 2px solid black;

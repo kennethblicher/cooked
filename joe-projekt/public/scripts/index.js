@@ -58,6 +58,7 @@ async function setCookie() {
       cookieDom.innerHTML = `<p>Error: ${error.message}</p>`;
     }
 }
+<<<<<<< Updated upstream
 /*************************************
  * Skal vel slettes?
  */
@@ -101,6 +102,8 @@ async function getLatLong(locationName) {
   }
 }
 
+=======
+>>>>>>> Stashed changes
 
 
 

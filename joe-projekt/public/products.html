@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Korrekt link til CSS-filen -->
   <link rel="stylesheet" href="./static/styles/global.css">
   <title>JOE and The Juice</title>
 </head>
@@ -12,15 +13,20 @@
 <body>
   <ul>
     <li><img src="./static/img/joeLogo.svg" alt="Logo"></li>
+    <li><a href="/index" class="active">Home</a></li>
+    <li style="float:right"><a href="/signup">Signup</a></li>
+
   </ul>
+
   <div class="center">
-    <p id="createText">Indtast din bekræftelseskode</p>
-    <input type="text" id="FaInput" placeholder="Bekræftelseskode">
-    <button id="2FaButton" onclick="handle2FA()">Bekræft</button>
-
+    <h2>Our Products</h2>
+    <div class="products">
+      <div id="product-list" class="product-list"></div>
+    </div>
+  </div>
 </div>
-</body>
 
-<script src="./static/scripts/2FA.js"></script>
+</body>
+<script src="./static/scripts/products.js"></script>
 
 </html>

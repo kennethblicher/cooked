@@ -9,6 +9,11 @@ const app = express();
 const bodyParser = require('body-parser');
 const twilio = require("twilio");
 const bcrypt = require('bcrypt');
+// Ift webtoken
+// require('dotenv').config();
+const jwtSecret = process.env.JWT_SECRET;
+const jwtExpiration = process.env.JWT_EXPIRATION || '1h';
+
 
 
 
@@ -31,9 +36,11 @@ app.use(responseTime())
 app.use(bodyParser.json());
 
 //
+
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "public", "register.html"));
 });
+
 
 app.get('/signup', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'signup.html'));
@@ -55,13 +62,23 @@ app.get('/Brugeroplysninger', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'Brugeroplysninger.html'));
 });
 
+app.get('/home', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'home.html'));
+});
+
 app.get('/index', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.get('/products', (req, res) => {
+<<<<<<< Updated upstream
   res.sendFile(path.join(__dirname, 'products', 'products.html'));
 });
+=======
+  res.sendFile(path.join(__dirname, 'public', 'products.html'));
+});
+
+>>>>>>> Stashed changes
 
 
 // Serve static files
@@ -71,6 +88,57 @@ app.use('/static', express.static(path.join(__dirname, 'public', 'static')));
 app.get("/res", (req, res) => {
   res.send("Response message from server");
 }); 
+
+
+
+
+
+//Endpoint til at logge ind.
+app.post('/loginUser', (req, res) => {
+  const { number, password } = req.body;
+  console.log('Request received at /login'); // Log request receipt
+  console.log('Request body:', req.body); // Log the incoming request body
+  if (!number || !password) {
+      console.error('Missing number or password in request'); // Debugging log
+      return res.status(400).send({ message: 'Number and password are required' });
+  }
+
+  const query = 'SELECT password FROM customers WHERE phone_number = ?';
+  db.get(query, [number], async (err, row) => {
+      if (err) {
+          console.error('Database error:', err.message); // Debugging log
+          return res.status(500).send({ message: 'Internal Server Error' });
+      }
+
+      if (!row) {
+          console.log(`No user found with number: ${number}`); // Debugging log
+          return res.status(401).send({ message: 'Invalid number or password' });
+      }
+
+      try {
+          const isPasswordValid = await bcrypt.compare(password, row.password);
+          console.log('Password validation result:', isPasswordValid); // Debugging log
+
+          if (isPasswordValid) {
+            // Generer JTW-token
+            const token = jwt.sign(
+            {id: row.id, number }, // Payload
+            jwtSecret, // Secret Key
+            {expiresIn: jwtExpiration || '1h'}) // Expires in 1 hour
+
+              console.log(`User with number ${number} successfully logged in`); // Debugging log
+              return res.status(200).send({ message: 'Login successful' });
+          } else {
+              console.warn('Password mismatch'); // Debugging log
+              return res.status(401).send({ message: 'Invalid number or password' });
+          }
+      } catch (error) {
+          console.error('Error comparing passwords:', error.message); // Debugging log
+          return res.status(500).send({ message: 'Internal Server Error' });
+      }
+  });
+});
+
 
 // Opsætning af 2FA med Twilio
 //Dokumentation https://www.twilio.com/en-us/blog/implement-2fa-twilio-verify-node
@@ -83,15 +151,41 @@ const client = twilio(accountSid, authToken);
 app.post('/send-2fa', async (req, res) => {
   const { tlfNumber } = req.body;
 
-  const verification = await client.verify.v2
-    .services(TWILIO_VERIFY_SERVICE_SID)
-    .verifications.create({
-      to: tlfNumber,
-      channel: 'sms',
-    });
+  // Query to check if the phone number exists in the database
+  const query = 'SELECT phone_number FROM customers WHERE phone_number = ?';
 
-  res.send({ status: verification.status });
+  db.get(query, [tlfNumber], async (err, row) => {
+    if (err) {
+      console.error('Database error:', err.message);
+      return res.status(500).send({ message: 'Internal Server Error' });
+    }
+
+    if (row) {
+      // If phone number exists in the database
+      console.log(`Phone number ${tlfNumber} already exists.`);
+      return res.status(409).send({ message: 'Phone number already registered' });
+    }
+
+    // If phone number does not exist, proceed with Twilio verification
+    try {
+      const verification = await client.verify.v2
+        .services(TWILIO_VERIFY_SERVICE_SID)
+        .verifications.create({
+          to: tlfNumber,
+          channel: 'sms',
+        });
+
+      res.send({ status: verification.status });
+    } catch (error) {
+      console.error('Error sending verification code:', error.message);
+      res.status(500).send({ message: 'Failed to send verification code' });
+    }
+  });
 });
+
+
+
+
 
 // Anvender telefonnummer og kode til at verificere brugeren
 app.post('/verify-2fa', async (req, res) => {
@@ -114,17 +208,21 @@ app.post('/verify-2fa', async (req, res) => {
 app.post("/registerUser", async (req, res) => {
   const { tlfNumber, password, name, email } = req.body;
 
+    res.send({ message: "Code sent" });
   try {
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
     console.log(password, tlfNumber, name, email);
-
     const query = `
       INSERT INTO customers (phone_number, password, name, email)
       VALUES (?, ?, ?, ?)
     `;
+<<<<<<< Updated upstream
 
     db.run(query, [email], function (err) {
+=======
+    db.run(query, [tlfNumber, passwordHash, name, email], function (err) {
+>>>>>>> Stashed changes
       if (err) {
         // Handle potential errors, such as duplicate phone numbers
         if (err.code === "SQLITE_CONSTRAINT") {
@@ -135,17 +233,15 @@ app.post("/registerUser", async (req, res) => {
         }
         return;
       }
-
       res.status(201).send({ message: "Bruger er oprettet", userId: this.lastID });
     });
   } catch (error) {
+    console.error("Error sending message:", error);
+    res.status(500).send({ message: "Failed to send code" });
     console.error("Error hashing password:", error.message);
     res.status(500).send({ message: "Failed to register user" });
   }
 });
-
-
-
 
 // route til at lave cookies, IKKE IMPLEMENTERET ENDNU
 
@@ -169,6 +265,35 @@ app.get("/protected", (req, res) => {
 
   res.send(`Velkommen ${customer.username}`);
 });
+
+
+
+/*// middelware ift webtoken!
+const jwt = require('jsonwebtoken');
+
+function authenticateToken(req, res, next) {
+  const token = req.headers['authorization']?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).send({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, jwtSecret, (error, user) => {
+    if (error) {
+      return res.status(403).send({ message: 'Invalid token' });
+    }
+    req.user = user;
+    next();
+  });
+}
+// Beskyt ruten med token  
+app.get('/protected', authenticateToken, (req, res) => {
+  res.send(`Welcome, user with ID: ${req.user.id}`);
+});
+
+
+*/
+
 
 
 

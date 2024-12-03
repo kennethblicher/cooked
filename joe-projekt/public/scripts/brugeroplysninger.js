@@ -39,7 +39,7 @@ async function userInput() {
             throw new Error(errorData.message || 'Failed to register user');
         }
         const data = await response.json();
-        window.location.href = "/index";
+        window.location.href = "/home";
     } catch (error) {
         console.error('Error registering user:', error.message);
         alert(`Error: ${error.message}`);
