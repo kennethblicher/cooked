@@ -31,7 +31,7 @@ async function login() {
         console.log('Login successful, response data:', data); // Debugging log
 
         // Redirect to the products page
-        window.location.href = "/joe-projekt/products/products.html";
+        window.location.href = "/products";
     } catch (error) {
         console.error('Error logging in:', error.message); // Debugging log
         alert(`Error: ${error.message}`);
