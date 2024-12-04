@@ -17,6 +17,7 @@ async function login() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(userData),
+            credentials: 'include', // medtag cookies i request
         });
 
         if (!response.ok) {
@@ -26,8 +27,8 @@ async function login() {
         }
 
         const data = await response.json();
-
-        sessionStorage.setItem('token', data.token); // Gem token
+        alert('Login successful'); 
+        
         console.log('Login successful, response data:', data); // Debugging log
 
         // Redirect to the products page
@@ -40,10 +41,17 @@ async function login() {
 console.log("hello")
 
 
-// logud funktion ift. rydde tokenet
 function logout() {
-    sessionStorage.removeItem('token');
-    alert('You are logged out');
-    window.location.href = '/login';
-  }
+    fetch('http://localhost:4000/logout', {
+        method: 'POST',
+        credentials: 'include', // Medtag cookies i request
+    })
+        .then(() => {
+            alert('You are logged out');
+            window.location.href = '/login';
+        })
+        .catch((error) => {
+            console.error('Error logging out:', error);
+        });
+}
   

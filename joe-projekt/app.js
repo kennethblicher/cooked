@@ -81,6 +81,8 @@ app.get('/tutorials', (req, res) => {
 
 
 
+
+
 // Serve static files
 app.use('/static', express.static(path.join(__dirname, 'public', 'static')));
 
@@ -306,6 +308,53 @@ app.post('/logout', (req, res) => {
 });
 
 
+app.post('/addProduct', (req, res) => {
+  const { name, imageUrl, price } = req.body;
+
+  // Check if all required fields are provided
+  if (!name || !imageUrl || !price) {
+    return res.status(400).send({ message: 'Name, image, and price are required' });
+  }
+  console.log(req.body)
+
+  // Insert product into the database
+  const query = `
+    INSERT INTO products (name, image, price)
+    VALUES (?, ?, ?)
+  `;
+
+  db.run(query, [name, imageUrl, price], function (err) {
+    if (err) {
+      console.error('Error adding product to database:', err.message);
+      return res.status(500).send({ message: 'Internal Server Error' });
+    }
+
+    // Send a success response with the product ID
+    res.status(201).send({
+      message: 'Product added successfully',
+      productId: this.lastID,
+    });
+  });
+});
+
+//
+app.get('/showProducts', (req, res) => {
+  const query = `
+    SELECT * FROM products
+  `;
+
+  db.all(query, (err, rows) => {
+    if (err) {
+      console.error('Error querying products from database:', err.message);
+      return res.status(500).send({ message: 'Internal Server Error' });
+    }
+
+    res.status(200).send({
+      message: 'Products retrieved successfully',
+      products: rows,
+    });
+  });
+});
 
 // Porten 
 app.listen(4000, () => {
