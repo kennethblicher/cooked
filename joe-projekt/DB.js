@@ -23,7 +23,7 @@ const db = new sqlite3.Database("./db.sqlite", (err) => {
   console.log("Connected to SQLite database.");
 });
 
-db.serialize(() => {
+db.serialize(() => { // db.serialize() bruges til at udføre flere SQL-forespørgsler i rækkefølge
   db.run(`
     CREATE TABLE IF NOT EXISTS customers (
       phone_number TEXT PRIMARY KEY,

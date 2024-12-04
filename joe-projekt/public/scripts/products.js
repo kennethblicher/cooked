@@ -1,9 +1,9 @@
 const cloudinary = require("cloudinary").v2;
-const sqlite3 = require("sqlite3").verbose();
-const express = require("express");
 const path = require("path");
+const db = require("./DB.js"); // Korrekt import af SQLite-databasen
+const express = require("express");
+const sqlite3 = require("sqlite3").verbose();
 const bodyParser = require("body-parser");
-const fs = require("fs"); // 
 
 const app = express();
 app.use(bodyParser.json());
@@ -15,14 +15,7 @@ cloudinary.config({ // Kenneths Cloudinary konto
   secure: true,
 });
 
-// SQLite databaseforbindelse
-const db = new sqlite3.Database("./db.sqlite", (err) => {
-  if (err) {
-    console.error("Error opening database:", err.message);
-  } else {
-    console.log("Connected to SQLite database.");
-  }
-});
+
 
 // Batch-upload produkter
 const products = [
@@ -34,7 +27,7 @@ const products = [
   { filePath: path.join(__dirname, "../img/pineapple_juice.jpg"), name: "Pineapple Juice", price: 30 },
 ];
 
-// Funktion til at uploade et billede til Cloudinary
+// Upload til Cloudinary - VIRKER
 const uploadToCloudinary = async (filePath) => {
   try {
     const result = await cloudinary.uploader.upload(filePath, {
@@ -49,6 +42,8 @@ const uploadToCloudinary = async (filePath) => {
   }
 };
 
+// VIRKER IKKE ENDNU
+/*
 // Funktion til at indsætte et produkt i databasen
 const insertProductToDatabase = (name, imageUrl, price) => {
   return new Promise((resolve, reject) => {
@@ -62,17 +57,17 @@ const insertProductToDatabase = (name, imageUrl, price) => {
     });
   });
 };
-
+*/
 // Håndter hele processen for et enkelt produkt
 const processProduct = async (product) => {
   try {
     const imageUrl = await uploadToCloudinary(product.filePath);
-    const insertedProduct = await insertProductToDatabase(
+    const insertedProduct = (
       product.name,
       imageUrl,
       product.price
     );
-    console.log("Produkt tilføjet til databasen:", insertedProduct);
+    console.log("Produkt tilføjet til databasen:", product.name);
   } catch (error) {
     console.error(`Fejl ved behandling af produkt ${product.name}:`, error.message);
   }
@@ -86,9 +81,8 @@ const uploadProducts = async () => {
   console.log("Alle produkter er uploadet og indsat i databasen.");
 };
 
+// Start processen
+
 uploadProducts().catch((error) => {
   console.error("Fejl ved batch-upload af produkter:", error.message);
 });
-
-// Start processen
-uploadProducts();
