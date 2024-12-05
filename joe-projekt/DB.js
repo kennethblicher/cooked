@@ -33,10 +33,25 @@ db.serialize(() => { // db.serialize() bruges til at udføre flere SQL-forespør
     if (err) {
       console.error("Error creating table:", err.message);
     } else {
-      console.log("Tables initialized successfully.");
+      console.log("Product table initialized successfully.");
     }
   });
 });
+
+db.run(`
+  CREATE TABLE IF NOT EXISTS tutorials (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    URL TEXT NOT NULL
+  )
+`, (err) => {
+  if (err) {
+    console.error("Error creating table:", err.message);
+  } else {
+    console.log("Tutorial table initialized successfully.");
+  }
+});
+
 
 // Close the database connection when done
 process.on("exit", () => {
@@ -50,6 +65,24 @@ process.on("exit", () => {
 });
 
 
+/*
+db.serialize(() => {
+    db.run("DELETE FROM customers", (err) => {
+        if (err) {
+            console.error("Error clearing customers table:", err.message);
+        } else {
+            console.log("Customers table cleared.");
+        }
+    });
+/*
+    db.run("DELETE FROM products", (err) => {
+        if (err) {
+            console.error("Error clearing products table:", err.message);
+        } else {
+            console.log("Products table cleared.");
+        }
+    });
+});*/
 
 
 module.exports = db;

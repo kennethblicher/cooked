@@ -206,3 +206,26 @@ signupButton.addEventListener('click', () => {
     window.location.href = '/joe-projekt/public/2FA.html';
   }
 });
+
+
+// ---------------------- Cookie for at tjekke authentification (forbliv logget inde) -------------------------------
+async function checkAuthentication() {
+  try {
+      const response = await fetch('/protected', {
+          credentials: 'include',
+      });
+
+      if (response.ok) {
+          const data = await response.text();
+          console.log('User authenticated:', data);
+          document.getElementById('login').innerHTML = `Welcome back! ${data}`;
+      } else {
+          window.location.href = '/login';
+      }
+  } catch (error) {
+      console.error('Error checking authentication:', error);
+      window.location.href = '/login';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', checkAuthentication);

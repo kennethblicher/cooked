@@ -9,7 +9,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const twilio = require("twilio");
 const bcrypt = require('bcrypt');
-
 const crypto = require('crypto'); // Til at generere en unik sessions-id
 
 
@@ -220,35 +219,38 @@ app.post('/verify-2fa', async (req, res) => {
 app.post("/registerUser", async (req, res) => {
   const { tlfNumber, password, name, email } = req.body;
 
-    res.send({ message: "Code sent" });
+  const trimmedPhoneNumber = tlfNumber.substring(3);
+  console.log("Trimmed phone number:", trimmedPhoneNumber);
+
+  res.cookie("userPhone", trimmedPhoneNumber, {
+    httpOnly: true,
+    secure: true, // Ensure HTTPS in production
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week in milliseconds
+    sameSite: "strict",
+  });
   try {
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
     console.log(password, tlfNumber, name, email);
+
     const query = `
       INSERT INTO customers (phone_number, password, name, email)
       VALUES (?, ?, ?, ?)
     `;
     db.run(query, [tlfNumber, passwordHash, name, email], function (err) {
       if (err) {
-        // Handle potential errors, such as duplicate phone numbers
-        if (err.code === "SQLITE_CONSTRAINT") {
-          res.status(409).send({ message: "Email eksisterer allerede" });
-        } else {
-          console.error("Database error:", err.message);
-          res.status(500).send({ message: "Internal Server Error" });
-        }
-        return;
+        console.error("Database error:", err.message);
+        return res.status(500).send({ message: "Internal Server Error" });
       }
-      res.status(201).send({ message: "Bruger er oprettet", userId: this.lastID });
+      // Set the cookie if insertion was successful
+      return res.status(201).send({ message: "User created", userId: this.lastID });
     });
   } catch (error) {
-    console.error("Error sending message:", error);
-    res.status(500).send({ message: "Failed to send code" });
-    console.error("Error hashing password:", error.message);
-    res.status(500).send({ message: "Failed to register user" });
+    console.error("Error:", error);
+    return res.status(500).send({ message: "Failed to register user" });
   }
 });
+
 
 // route til at lave cookies, IKKE IMPLEMENTERET ENDNU
 
@@ -277,6 +279,7 @@ app.get("/protected", (req, res) => {
 
 
 // COOKIES!
+
 const sessions = {}; // Simpel in-memory session (kan erstattes med database)
 
 function authenticateSession(req, res, next) {
@@ -307,7 +310,7 @@ app.post('/logout', (req, res) => {
   res.status(200).send({ message: 'Logged out successfully' });
 });
 
-
+// 
 app.post('/addProduct', (req, res) => {
   const { name, imageUrl, price } = req.body;
 
@@ -337,8 +340,9 @@ app.post('/addProduct', (req, res) => {
   });
 });
 
-//
+// Endpoint til at vise produkter fra databasen
 app.get('/showProducts', (req, res) => {
+
   const query = `
     SELECT * FROM products
   `;
@@ -352,6 +356,84 @@ app.get('/showProducts', (req, res) => {
     res.status(200).send({
       message: 'Products retrieved successfully',
       products: rows,
+    });
+  });
+});
+
+app.post('/buyProduct', async (req, res) => {
+  const { productName} = req.body;
+
+  // Validate request data
+  if (!productName) {
+    return res.status(400).send({ message: 'Name and phone number are required' });
+  }
+
+  const messageBody = `Hello customer, your purchase of ${productName} has been confirmed. Thank you for shopping with us!`;
+
+  try {
+    // Create and send the SMS
+    const message = await client.messages.create({
+      from: '+18565597458', // Replace with your Twilio phone number
+      to: phoneNumber,
+      body: messageBody,
+    });
+
+    console.log('Message sent:', message.sid);
+    res.status(200).send({ message: 'Message sent successfully', sid: message.sid });
+  } catch (error) {
+    console.error('Error sending message:', error.message);
+    res.status(500).send({ message: 'Failed to send message', error: error.message });
+  }
+});
+
+
+// Endpoint til at tilføje en video
+app.post('/addVideo', (req, res) => {
+  const { name, URL } = req.body;
+
+  // Check if all required fields are provided
+  if (!name || !URL) {
+    return res.status(400).send({ message: 'Name and URL are required' });
+  }
+  console.log(req.body)
+
+  // Insert product into the database
+  const query = `
+    INSERT INTO tutorials (name, URL)
+    VALUES (?, ?)
+  `;
+
+  db.run(query, [name, URL], function (err) {
+    if (err) {
+      console.error('Error adding video to database:', err.message);
+      return res.status(500).send({ message: 'Internal Server Error' });
+    }
+
+    // Send a success response with the product ID
+    res.status(201).send({
+      message: 'Video added successfully',
+      videoId: this.lastID,
+    });
+  });
+});
+
+// Get vidoer
+
+app.get('/showVideos', (req, res) => {
+
+  const query = `
+    SELECT * FROM tutorials
+  `;
+
+  db.all(query, (err, rows) => {
+    if (err) {
+      console.error('Error querying videos from database:', err.message);
+      return res.status(500).send({ message: 'Internal Server Error' });
+    }
+
+    res.status(200).send({
+      message: 'Videos retrieved successfully',
+      videos: rows,
     });
   });
 });

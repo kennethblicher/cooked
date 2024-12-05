@@ -32,14 +32,12 @@ async function login() {
         console.log('Login successful, response data:', data); // Debugging log
 
         // Redirect to the products page
-        window.location.href = "/products";
+        window.location.href = "/home";
     } catch (error) {
         console.error('Error logging in:', error.message); // Debugging log
         alert(`Error: ${error.message}`);
     }
 }
-console.log("hello")
-
 
 function logout() {
     fetch('http://localhost:4000/logout', {
