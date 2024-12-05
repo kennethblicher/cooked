@@ -361,20 +361,22 @@ app.get('/showProducts', (req, res) => {
 });
 
 app.post('/buyProduct', async (req, res) => {
-  const { productName} = req.body;
+  const { productName } = req.body; // Only `productName` is taken from the request body
+  const phone_number = req.cookies.userPhone; // Phone number is retrieved from the HttpOnly cookie
+  const formattedPhoneNumber = `+45${phone_number}`; // Add +45 to the phone number
 
   // Validate request data
-  if (!productName) {
-    return res.status(400).send({ message: 'Name and phone number are required' });
+  if (!productName || !phone_number) {
+    return res.status(400).send({ message: 'Product name and phone number are required' });
   }
 
   const messageBody = `Hello customer, your purchase of ${productName} has been confirmed. Thank you for shopping with us!`;
 
   try {
-    // Create and send the SMS
+    // Create and send the SMS using Twilio
     const message = await client.messages.create({
-      from: '+18565597458', // Replace with your Twilio phone number
-      to: phoneNumber,
+      from: '+18504006662', // Replace with your Twilio phone number
+      to: formattedPhoneNumber, // Use the phone number from the cookie
       body: messageBody,
     });
 
