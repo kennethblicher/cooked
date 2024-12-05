@@ -48,7 +48,7 @@ db.run(`
   if (err) {
     console.error("Error creating table:", err.message);
   } else {
-    console.log("Tutorial table initialized successfully.");
+    console.log("Video tutorial table initialized successfully.");
   }
 });
 
@@ -83,6 +83,20 @@ db.serialize(() => {
         }
     });
 });*/
+
+// TIL AT SLETTE EN TABEL 
+
+/*
+db.run("DROP TABLE IF EXISTS tutorials", (err) => {
+  if (err) {
+    console.error("Error tutorials products table:", err.message);
+  } else {
+    console.log("tutorials table dropped successfully.");
+  }
+});
+
+*/
+
 
 
 module.exports = db;

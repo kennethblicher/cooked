@@ -1,6 +1,5 @@
 const cloudinary = require("cloudinary").v2;
 const path = require("path");
-const db = require('../../DB.js');
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const bodyParser = require("body-parser");
@@ -10,82 +9,92 @@ app.use(bodyParser.json());
 
 // Cloudinary-konfiguration
 cloudinary.config({
-  cloud_name: "djskwgibn", // Kenneths Cloudinary konto
-  api_key: "815471325232252",
-  api_secret: "QcT6ufvgA1TubTkevgXbGmSa49Y",
-  secure: true,
+    cloud_name: "djskwgibn", // Kenneths Cloudinary konto
+    api_key: "815471325232252",
+    api_secret: "QcT6ufvgA1TubTkevgXbGmSa49Y",
+    secure: true,
 });
 
-// Batch-upload produkter
-const video = [
-  { filePath: path.join(__dirname, "../video/cbs.mp4"), name: "Test"},
+console.log("Cloudinary-konfiguration:", cloudinary.config());
 
+
+// Fil, der skal uploades
+const videos = [
+    { filePath: path.join(__dirname, "../video/test.mp4"), name: "Test" },
 ];
 
+
 // Funktion til at uploade filer til Cloudinary
-const uploadToCloudinary = async (filePath, video) => {
-  try {
-    const result = await cloudinary.uploader.upload(filePath, {
-      public_id: `joe-products/${path.basename(filePath, path.extname(filePath))}`,
-      resource_type: "auto",
-    });
-
-    console.log(`Video uploadet: ${result.secure_url}`);
-
-    // Return the image URL along with the video name and price
-    return {
-      url: result.secure_url,
-      name: video.name,
-    };
-  } catch (error) {
-    console.error("Fejl ved upload til Cloudinary:", error.message);
-    throw error;
-  }
+const uploadToCloudinary = async (filePath, publicId) => {
+    try {
+        console.log(`Starter upload af: ${filePath}`);
+        const result = await cloudinary.uploader.upload(filePath, {
+            public_id: publicId,
+            resource_type: "auto", // Sørg for, at det er angivet som video
+        });
+        console.log(`Video uploadet med succes: ${result.secure_url}`);
+        return result.secure_url;
+    } catch (error) {
+        console.error("Fejl ved upload til Cloudinary:", error); // Log hele fejlen
+        throw error;
+    }
 };
 
-// Håndter hele processen for et enkelt produkt
 const processVideo = async (video) => {
-  try {
-    // Upload the image and retrieve the URL, name, and price
-    const { url, name } = await uploadToCloudinary(video.filePath, video);
+    try {
+        // Upload filen til Cloudinary og hent URL
+        const publicId = `joe-products/${path.basename(
+            video.filePath,
+            path.extname(video.filePath)
+        )}`;
+        const url = await uploadToCloudinary(video.filePath, publicId);
 
-    // Prepare video data with the uploaded image URL
-    const videoData = {
-      name,
-      URL: url,
-    };
+        // Forbered data til at sende til databasen
+        const videoData = {
+            name: video.name,
+            URL: url, // Brug den returnerede URL fra Cloudinary
+        };
 
-    // Post the video data to your server
-    const response = await fetch("http://localhost:4000/addVideo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(videoData), // Convert video data to JSON
-    });
+        // Log før afsendelse
+        console.log("Sender data til /addVideo:", videoData);
 
-    // Check if the response is successful
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to add video");
+        // POST anmodning til backend
+        // POST anmodning til backend
+        const response = await fetch("http://localhost:4000/addVideo", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(videoData),
+        });
+
+        // Håndter responsen fra serveren
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("POST til /addVideo fejlede:", errorText);
+            throw new Error(`POST til /addVideo fejlede: ${errorText}`);
+        }
+
+
+        const result = await response.json();
+        console.log(`Videoen "${video.name}" blev tilføjet med URL: ${url}`);
+        return result;
+    } catch (error) {
+        console.error(`Fejl ved behandling af video "${video.name}":`, error.message);
     }
-
-    const result = await response.json();
-    console.log(`Videoen "${name}" blev tilføjet med videoen: ${url}`);
-    return result;
-  } catch (error) {
-    console.error(`Fejl ved behandling af videoen ${video.name}:`, error.message);
-  }
 };
 
-// Batch-upload af alle produkter
-const videos = [
-    { filePath: path.join(__dirname, "../video/cbs.mp4"), name: "Test" },
-  ];
-  
-  const uploadVideos = async () => {
+// Batch-upload af videoer
+const uploadVideos = async () => {
     for (const video of videos) {
-      await processVideo(video);
+        await processVideo(video);
     }
-    console.log("Alle videoer er uploadet til Cloudinary.");
-  };
+    console.log("Alle produkter er uploadet til Cloudinary.");
+};
+
+// Start batch-upload
+uploadVideos().catch((error) => {
+    console.error("Fejl ved batch-upload af videoer:", error.message);
+});
+
+console.log("Absolut sti til video:", path.resolve(__dirname, "../video/cbs.mp4"));

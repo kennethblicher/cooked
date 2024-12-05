@@ -361,20 +361,22 @@ app.get('/showProducts', (req, res) => {
 });
 
 app.post('/buyProduct', async (req, res) => {
-  const { productName} = req.body;
+  const { productName } = req.body; // Only `productName` is taken from the request body
+  const phone_number = req.cookies.userPhone; // Phone number is retrieved from the HttpOnly cookie
+  const formattedPhoneNumber = `+45${phone_number}`; // Add +45 to the phone number
 
   // Validate request data
-  if (!productName) {
-    return res.status(400).send({ message: 'Name and phone number are required' });
+  if (!productName || !phone_number) {
+    return res.status(400).send({ message: 'Product name and phone number are required' });
   }
 
   const messageBody = `Hello customer, your purchase of ${productName} has been confirmed. Thank you for shopping with us!`;
 
   try {
-    // Create and send the SMS
+    // Create and send the SMS using Twilio
     const message = await client.messages.create({
-      from: '+18565597458', // Replace with your Twilio phone number
-      to: phoneNumber,
+      from: '+18504006662', // Replace with your Twilio phone number
+      to: formattedPhoneNumber, // Use the phone number from the cookie
       body: messageBody,
     });
 
@@ -391,13 +393,16 @@ app.post('/buyProduct', async (req, res) => {
 app.post('/addVideo', (req, res) => {
   const { name, URL } = req.body;
 
-  // Check if all required fields are provided
   if (!name || !URL) {
+    console.error("Manglende data i /addVideo:", req.body);
     return res.status(400).send({ message: 'Name and URL are required' });
   }
-  console.log(req.body)
 
-  // Insert product into the database
+
+
+  console.log("Data modtaget i /addVideo:", req.body);
+
+  // Indsæt data i databasen
   const query = `
     INSERT INTO tutorials (name, URL)
     VALUES (?, ?)
@@ -405,11 +410,11 @@ app.post('/addVideo', (req, res) => {
 
   db.run(query, [name, URL], function (err) {
     if (err) {
-      console.error('Error adding video to database:', err.message);
+      console.error('Fejl ved tilføjelse til databasen:', err.message);
       return res.status(500).send({ message: 'Internal Server Error' });
     }
 
-    // Send a success response with the product ID
+    console.log("Video tilføjet med ID:", this.lastID);
     res.status(201).send({
       message: 'Video added successfully',
       videoId: this.lastID,
@@ -417,10 +422,10 @@ app.post('/addVideo', (req, res) => {
   });
 });
 
+
 // Get vidoer
 
 app.get('/showVideos', (req, res) => {
-
   const query = `
     SELECT * FROM tutorials
   `;
@@ -431,12 +436,14 @@ app.get('/showVideos', (req, res) => {
       return res.status(500).send({ message: 'Internal Server Error' });
     }
 
+    console.log("Data hentet fra databasen:", rows); // Log video data fra databasen
     res.status(200).send({
       message: 'Videos retrieved successfully',
       videos: rows,
     });
   });
 });
+
 
 // Porten 
 app.listen(4000, () => {
