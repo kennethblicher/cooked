@@ -84,6 +84,15 @@ db.serialize(() => {
     });
 });*/
 
+db.run("DELETE FROM tutorials", (err) => {
+  if (err) {
+      console.error("Error clearing products table:", err.message);
+  } else {
+      console.log("Products table cleared.");
+  }
+});
+
+
 // TIL AT SLETTE EN TABEL 
 
 /*
