@@ -1,6 +1,6 @@
 async function showVideos() {
     try {
-        const response = await fetch("http://localhost:4000/showVideos");
+        const response = await fetch("http://165.227.138.73:4000/showVideos");
         if (!response.ok) {
             throw new Error("Failed to fetch videos");
         }

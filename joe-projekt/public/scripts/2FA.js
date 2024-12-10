@@ -27,7 +27,7 @@ async function handle2FA() {
   console.log(tlfNumber);
 
   try {
-    const response = await fetch('http://localhost:4000/verify-2fa', {
+    const response = await fetch('http://165.227.138.73:4000/verify-2fa', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tlfNumber, userCode }),

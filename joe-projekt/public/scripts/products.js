@@ -1,8 +1,6 @@
 const cloudinary = require("cloudinary").v2;
 const path = require("path");
-const db = require('../../DB.js');
 const express = require("express");
-const sqlite3 = require("sqlite3").verbose();
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -62,7 +60,7 @@ const processProduct = async (product) => {
     };
 
     // Post the product data to your server
-    const response = await fetch("http://localhost:4000/addProduct", {
+    const response = await fetch("http://165.227.138.73:4000/addProduct", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
