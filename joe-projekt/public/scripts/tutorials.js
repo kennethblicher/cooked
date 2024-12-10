@@ -20,10 +20,10 @@ console.log("Cloudinary-konfiguration:", cloudinary.config());
 
 // Fil, der skal uploades
 const videos = [
-    { filePath: path.join(__dirname, "../video/Video1.mp4"), name: "Video1" },
-    { filePath: path.join(__dirname, "../video/Video2.mp4"), name: "Video2" },
-    { filePath: path.join(__dirname, "../video/Video3.mp4"), name: "Video3" },
-    { filePath: path.join(__dirname, "../video/Video4.mp4"), name: "Video4" },
+    { filePath: path.join(__dirname, "../video/Video1.mp4"), name: "Make a shake with Nick kyrgios" },
+    { filePath: path.join(__dirname, "../video/Video2.mp4"), name: "How to enjoy a JOE sandwich" },
+    { filePath: path.join(__dirname, "../video/Video3.mp4"), name: "Creating the perfect JOE coffee" },
+    { filePath: path.join(__dirname, "../video/Video4.mp4"), name: "The secret behind the best Tuna mousse matcha" },
 ];
 
 
