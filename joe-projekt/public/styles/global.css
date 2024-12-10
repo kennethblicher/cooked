@@ -427,3 +427,65 @@ select {
   font-weight: bold;
   color: #303030;
 }
+
+/* Baggrundsbillede for Home-siden */
+.home-background {
+  background-image: url('../img/homePicture.jpg'); /* Sti til baggrundsbilledet */
+  background-size: cover; /* Sørger for, at billedet dækker hele skærmen */
+  background-repeat: no-repeat; /* Undgår gentagelser */
+  background-position: center; /* Centrer billedet */
+  height: 100vh; /* Fylder hele skærmhøjden */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white; /* Hvid tekst for kontrast */
+  text-align: center;
+}
+
+/* Navigation (Logo) */
+.home-nav {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.home-logo {
+  width: 100px; /* Størrelse på logoet */
+}
+
+/* Content på siden */
+.home-content h2 {
+  font-size: 3rem; /* Størrelse på overskriften */
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Tilføjer skygge til teksten */
+}
+
+/* Knapper for "Products" og "Tutorials" */
+.home-buttons {
+  display: flex;
+  gap: 20px; /* Afstand mellem knapperne */
+  justify-content: center;
+}
+
+.home-btn {
+  font-family: sans-serif;
+  background-color: #f7c1d9;
+  color: #000000;
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: 15px 30px; /* Indre polstring */
+  border: 2px solid white;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  width: 240px;
+  height: 50px;
+  margin: 5px;
+}
+
+.home-btn:hover {
+  background-color: #f088b7; /* Hover-effekt */
+  transform: scale(1.1); /* Løfter knappen lidt ved hover */
+}
