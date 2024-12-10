@@ -64,8 +64,8 @@ process.on("exit", () => {
   });
 });
 
-
 /*
+
 db.serialize(() => {
     db.run("DELETE FROM customers", (err) => {
         if (err) {
@@ -74,7 +74,7 @@ db.serialize(() => {
             console.log("Customers table cleared.");
         }
     });
-/*
+
     db.run("DELETE FROM products", (err) => {
         if (err) {
             console.error("Error clearing products table:", err.message);
@@ -82,7 +82,7 @@ db.serialize(() => {
             console.log("Products table cleared.");
         }
     });
-});*/
+*/
 
 db.run("DELETE FROM tutorials", (err) => {
   if (err) {

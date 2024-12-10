@@ -18,8 +18,6 @@ async function showVideos() {
             const videoElement = document.createElement("video");
             videoElement.src = video.URL; // URL til videoen
             videoElement.controls = true; // Tilføj afspilningskontroller
-            videoElement.style.width = "320px"; // Sæt videoens bredde
-            videoElement.style.height = "240px"; // Sæt videoens højde
             videoElement.alt = video.name; // Tilføj alternativ tekst
           
             // Create a name element

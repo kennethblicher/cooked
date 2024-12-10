@@ -239,3 +239,191 @@ select {
   text-align: center; /* Centrerer teksten vandret */
   display: block; /* Sikrer, at det tager sin egen linje */
 }
+
+#product-list {
+  display: flex;
+  flex-wrap: wrap; /* Tillader linjeskift hvis pladsen ikke er nok */
+  justify-content: center; /* Centrerer elementerne */
+  gap: 20px; /* Giver afstand mellem elementerne */
+  margin-top: 20px;
+}
+
+.product {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrerer indholdet i hvert produkt */
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  width: 220px;
+}
+
+.product img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.product h3 {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #303030;
+}
+
+.product p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #606060;
+}
+
+.product button {
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 10px 20px;
+  background-color: #f7c1d9;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.product button:hover {
+  background-color: #f088b7;
+  transform: translateY(-2px);
+}
+
+.product-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+
+#Espresso{
+  border: 2px solid black;
+  border-radius: 5px; /* Mindre afrunding for et kompakt udseende */
+  padding: 5px 10px; /* Mindre polstring for en kompakt knap */
+  font-size: 18px; /* Mindre tekst for at gøre knappen mindre */
+  background-color: #f7c1d9;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 200px; /* Fast bredde for knappen */
+  height: 75px; /* Fast højde for knappen */
+  text-align: center; /* Centrer teksten */
+  display: inline-block; /* Sikrer korrekt inline-styling */
+}
+
+
+#Cappuccino{
+  border: 2px solid black;
+  border-radius: 5px; /* Mindre afrunding for et kompakt udseende */
+  padding: 5px 10px; /* Mindre polstring for en kompakt knap */
+  font-size: 18px; /* Mindre tekst for at gøre knappen mindre */
+  background-color: #f7c1d9;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 200px; /* Fast bredde for knappen */
+  height: 75px; /* Fast højde for knappen */
+  text-align: center; /* Centrer teksten */
+  display: inline-block; /* Sikrer korrekt inline-styling */
+}
+
+#Apple-Juice{
+  border: 2px solid black;
+  border-radius: 5px; /* Mindre afrunding for et kompakt udseende */
+  padding: 5px 10px; /* Mindre polstring for en kompakt knap */
+  font-size: 18px; /* Mindre tekst for at gøre knappen mindre */
+  background-color: #f7c1d9;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 200px; /* Fast bredde for knappen */
+  height: 75px; /* Fast højde for knappen */
+  text-align: center; /* Centrer teksten */
+  display: inline-block; /* Sikrer korrekt inline-styling */
+}
+
+#Grapes{
+  border: 2px solid black;
+  border-radius: 5px; /* Mindre afrunding for et kompakt udseende */
+  padding: 5px 10px; /* Mindre polstring for en kompakt knap */
+  font-size: 18px; /* Mindre tekst for at gøre knappen mindre */
+  background-color: #f7c1d9;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 200px; /* Fast bredde for knappen */
+  height: 75px; /* Fast højde for knappen */
+  text-align: center; /* Centrer teksten */
+  display: inline-block; /* Sikrer korrekt inline-styling */
+}
+
+#Orange-Juice{
+  border: 2px solid black;
+  border-radius: 5px; /* Mindre afrunding for et kompakt udseende */
+  padding: 5px 10px; /* Mindre polstring for en kompakt knap */
+  font-size: 18px; /* Mindre tekst for at gøre knappen mindre */
+  background-color: #f7c1d9;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 200px; /* Fast bredde for knappen */
+  height: 75px; /* Fast højde for knappen */
+  text-align: center; /* Centrer teksten */
+  display: inline-block; /* Sikrer korrekt inline-styling */
+}
+
+#Pineapple-Juice{
+  border: 2px solid black;
+  border-radius: 5px; /* Mindre afrunding for et kompakt udseende */
+  padding: 5px 10px; /* Mindre polstring for en kompakt knap */
+  font-size: 18px; /* Mindre tekst for at gøre knappen mindre */
+  background-color: #f7c1d9;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 200px; /* Fast bredde for knappen */
+  height: 75px; /* Fast højde for knappen */
+  text-align: center; /* Centrer teksten */
+  display: inline-block; /* Sikrer korrekt inline-styling */
+}
+
+/* Styling for the video list container */
+.video-list {
+  display: flex; /* Gør det muligt at placere videoerne på en vandret række */
+  flex-wrap: wrap; /* Tillader linjeskift, hvis der ikke er nok plads */
+  justify-content: center; /* Centrerer videoerne horisontalt */
+  gap: 20px; /* Afstand mellem videoerne */
+  margin-top: 20px;
+}
+
+/* Styling for individual video containers */
+.video {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrerer navn og video i midten */
+  text-align: center;
+  width: 400px; /* Fastsæt bredden på videoens container */
+}
+
+/* Styling for the video element */
+.video video {
+  width: 100%; /* Fylder hele containerens bredde */
+  height: auto; /* Bevarer proportionerne */
+  border-radius: 10px; /* Tilføjer afrundede hjørner */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Tilføjer en skygge */
+  margin-bottom: 10px; /* Afstand til navnet under videoen */
+}
+
+/* Styling for the video name */
+.video h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #303030;
+}

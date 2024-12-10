@@ -18,12 +18,12 @@ cloudinary.config({
 
 // Batch-upload produkter
 const products = [
-  { filePath: path.join(__dirname, "../img/cappuccino.jpg"), name: "Cappuccino", price: 35 },
-  { filePath: path.join(__dirname, "../img/espresso.jpg"), name: "Espresso", price: 35 },
-  { filePath: path.join(__dirname, "../img/apple_juice.jpg"), name: "Apple Juice", price: 25 },
-  { filePath: path.join(__dirname, "../img/orange_juice.jpg"), name: "Orange Juice", price: 25 },
-  { filePath: path.join(__dirname, "../img/grapes.jpg"), name: "Grapes", price: 20 },
-  { filePath: path.join(__dirname, "../img/pineapple_juice.jpg"), name: "Pineapple Juice", price: 30 },
+  { filePath: path.join(__dirname, "../img/cappuccino.jpg"), name: "Cappuccino", price: 15 },
+  { filePath: path.join(__dirname, "../img/espresso.jpg"), name: "Espresso", price: 18 },
+  { filePath: path.join(__dirname, "../img/apple_juice.jpg"), name: "Apple-Juice", price: 8 },
+  { filePath: path.join(__dirname, "../img/orange_juice.jpg"), name: "Orange-Juice", price: 8 },
+  { filePath: path.join(__dirname, "../img/grapes.jpg"), name: "Grapes", price: 5 },
+  { filePath: path.join(__dirname, "../img/pineapple_juice.jpg"), name: "Pineapple-Juice", price: 8 },
 ];
 
 // Funktion til at uploade filer til Cloudinary
