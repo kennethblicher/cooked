@@ -1,7 +1,7 @@
 async function check2FA() {
   const tlfNumber = document.getElementById('nummerInput').value;
   try {
-    const response = await fetch('http://localhost:4000/send-2fa', {
+    const response = await fetch('http://165.227.138.73:4000/send-2fa', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tlfNumber }),

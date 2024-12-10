@@ -1,6 +1,6 @@
 async function showProducts() {
     try {
-        const response = await fetch("http://localhost:4000/showProducts");
+        const response = await fetch("http://165.227.138.73:4000/showProducts");
         if (!response.ok) {
             throw new Error("Failed to fetch products");
         }
@@ -60,7 +60,7 @@ async function buyProduct(productName) {
     };
 
     // Send a POST request to the /buyProduct endpoint
-    const response = await fetch('http://localhost:4000/buyProduct', {
+    const response = await fetch('http://165.227.138.73:4000/buyProduct', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
