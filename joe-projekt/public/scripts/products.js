@@ -60,7 +60,7 @@ const processProduct = async (product) => {
     };
 
     // Post the product data to your server
-    const response = await fetch("/addProduct", {
+    const response = await fetch("http://localhost:4000/addProduct", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
