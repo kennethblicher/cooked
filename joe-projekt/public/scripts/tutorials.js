@@ -63,7 +63,7 @@ const processVideo = async (video) => {
 
         // POST anmodning til backend
         // POST anmodning til backend
-        const response = await fetch("http://165.227.138.73:4000/addVideo", {
+        const response = await fetch("/addVideo", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

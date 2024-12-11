@@ -60,7 +60,7 @@ const processProduct = async (product) => {
     };
 
     // Post the product data to your server
-    const response = await fetch("http://165.227.138.73:4000/addProduct", {
+    const response = await fetch("/addProduct", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

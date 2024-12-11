@@ -26,7 +26,7 @@ async function userInput() {
     };
 
     try {
-        const response = await fetch('http://165.227.138.73:4000/registerUser', {
+        const response = await fetch('/registerUser', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

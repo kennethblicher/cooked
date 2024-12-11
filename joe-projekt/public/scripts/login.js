@@ -11,7 +11,7 @@ async function login() {
 
     try {
         console.log('Sending login request with:', userData); // Debugging log
-        const response = await fetch('http://165.227.138.73:4000/loginUser', {
+        const response = await fetch('/loginUser', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ async function login() {
 }
 
 function logout() {
-    fetch('http://165.227.138.73:4000/logout', {
+    fetch('/logout', {
         method: 'POST',
         credentials: 'include', // Medtag cookies i request
     })
