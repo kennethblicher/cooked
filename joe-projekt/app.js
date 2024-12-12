@@ -135,7 +135,9 @@ app.post('/loginUser', (req, res) => {
             // Gem sessionen i serverens hukommelse (eller database)
             // Her bruger vi en simpel in-memory session til eksemplet
 
-            res.cookie("userPhone", number, {
+            const trimmedPhoneNumber = number.substring(3);
+
+            res.cookie("userPhone", trimmedPhoneNumber, {
               httpOnly: true,
               secure: false, // Do not require HTTPS for the cookie
               maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
