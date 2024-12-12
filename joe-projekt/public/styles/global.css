@@ -1,41 +1,56 @@
-body {
-  margin: 0px;
-  font-family: Calibri;
-}
-
 ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #f7c1d9;
-    font-size: 2em;
-  }
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #f7c1d9; /* Soft pink background */
+  font-size: 2.1rem; /* Adjusted for better readability */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  border-radius: 8px; /* Slight rounding for a modern look */
+  height: 100px;
   
-  li {
-    float: left;
-  } 
-  
-  li a {
-    display: block;
-    color: rgb(41, 41, 41);
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-  li img{
-    display: block;
-    width: 65px;
-  }
-  
-.active{
-    background-color: #f09bc1;
-    font-weight: bolder;
+  /* Use Flexbox for centering */
+  display: flex;
+  align-items: center; /* Vertically align items */
+  justify-content: flex-start; /* Align items to the left */
+  gap: 10px; /* Space between items */
 }
 
-  li a:hover {
-    background-color: #f088b7;
-    font-weight: bolder;
+li {
+  margin: 0 10px; /* Reset margin */
+  list-style: none; /* Remove default list styles */
+}
+
+li a {
+  display: block;
+  color: rgb(41, 41, 41); /* Neutral dark color for contrast */
+  text-align: center;
+  padding: 14px 20px; /* Increased padding for better touch targets */
+  text-decoration: none;
+  transition: all 0.3s ease; /* Smooth transitions for hover effects */
+  border-radius: 5px; /* Rounded corners for buttons */
+}
+
+li img {
+  display: block;
+  width: 65px;
+  border-radius: 50%; /* Circle avatar style */
+  margin: auto; /* Center align the image */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add depth to images */
+}
+
+.active {
+  background-color: #ff9cc8; /* Highlight color for active state */
+  font-weight: bolder;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); /* Inner shadow for focus */
+}
+
+li a:hover {
+  background-color: #f088b7; /* Hover effect color */
+  font-weight: bolder;
+  color: white; /* Contrast on hover */
+  transform: scale(1.05); /* Slight scale-up for interactivity */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15); /* Shadow for hover effect */
 }
 
 /* .container {
@@ -394,6 +409,12 @@ select {
   display: inline-block; /* Sikrer korrekt inline-styling */
 }
 
+#tutorialTitle {
+  font-size: 2rem; /* Størrelse på overskriften */
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
 /* Styling for the video list container */
 .video-list {
   display: flex; /* Gør det muligt at placere videoerne på en vandret række */
@@ -420,10 +441,12 @@ select {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Tilføjer en skygge */
   margin-bottom: 10px; /* Afstand til navnet under videoen */
 }
-
+:root {
+ background-color: #ebebeb;
+}
 /* Styling for the video name */
 .video h3 {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: bold;
   color: #303030;
 }
@@ -488,3 +511,4 @@ select {
   background-color: #f088b7; /* Hover-effekt */
   transform: scale(1.1); /* Løfter knappen lidt ved hover */
 }
+

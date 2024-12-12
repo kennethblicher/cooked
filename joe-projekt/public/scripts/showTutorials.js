@@ -23,6 +23,7 @@ async function showVideos() {
             // Create a name element
             const name = document.createElement("h3");
             name.textContent = video.name; // Navn på videoen
+            name.className = "video-title"
           
             // Append elements to the video container
             videoDiv.appendChild(videoElement);

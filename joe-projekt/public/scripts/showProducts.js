@@ -76,7 +76,7 @@ async function buyProduct(productName) {
 
     // Parse the response
     const data = await response.json();
-    alert(`Purchase confirmed! ${data.message}`);
+    alert(`Order confirmed! Thank you for purchasing ${data.productName}`);
     console.log('Response:', data);
   } catch (error) {
     // Handle errors

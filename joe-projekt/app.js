@@ -332,7 +332,7 @@ app.post('/buyProduct', async (req, res) => {
     });
 
     console.log('Message sent:', message.sid);
-    res.status(200).send({ message: 'Message sent successfully', sid: message.sid });
+    res.status(200).send({ message: productName, sid: message.sid });
   } catch (error) {
     console.error('Error sending message:', error.message);
     res.status(500).send({ message: 'Failed to send message', error: error.message });
