@@ -87,7 +87,27 @@ async function buyProduct(productName) {
   
 document.addEventListener("DOMContentLoaded", showProducts());
 
-//virker det?
-//kan ikek rigtige teste det uden en terminala
-//den virker ikek rigtig 
-//
+// 
+async function checkCookie() {
+  console.log("this is working")
+  try {
+    const response = await fetch("/check-cookie", {
+      credentials: "include", // Include cookies in the request
+    });
+
+    if (response.status === 200) {
+      const data = await response.json();
+      console.log("Cookie exists:", data.userPhone);
+      // Proceed with the page logic
+    } else {
+      // Redirect if the cookie does not exist
+      window.location.href = "/register";
+    }
+  } catch (error) {
+    console.error("Error checking cookie:", error);
+    window.location.href = "/register"; // Fallback in case of error
+  }
+}
+
+// Check if the cookie exists when the page loads
+checkCookie();

@@ -87,7 +87,17 @@ app.get("/res", (req, res) => {
 }); 
 
 
+//
 
+app.get("/check-cookie", (req, res) => {
+  const userPhone = req.cookies.userPhone;
+
+  if (userPhone) {
+    return res.status(200).json({ exists: true, userPhone });
+  }
+
+  return res.status(401).json({ exists: false, message: "Not logget in" });
+});
 
 
 //Endpoint til at logge ind.
@@ -122,14 +132,12 @@ app.post('/loginUser', (req, res) => {
     
             // Gem sessionen i serverens hukommelse (eller database)
             // Her bruger vi en simpel in-memory session til eksemplet
-            sessions[sessionId] = { userId: row.id, number };
-    
-            // Sæt session-id som en cookie
-            res.cookie('sessionId', sessionId, {
-              httpOnly: true, // Forhindrer adgang via JavaScript
-              secure: false, // Sæt til true i produktion med HTTPS
-              maxAge: 3600000, // 1 time
-              sameSite: 'Strict', // Beskyt mod CSRF
+
+            res.cookie("userPhone", number, {
+              httpOnly: true,
+              secure: true, // Ensure HTTPS in production
+              maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+              sameSite: "strict",
             });
 
 
@@ -221,7 +229,7 @@ app.post("/registerUser", async (req, res) => {
   res.cookie("userPhone", trimmedPhoneNumber, {
     httpOnly: true,
     secure: true, // Ensure HTTPS in production
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week in milliseconds
+    maxAge: 24 * 60 * 60 * 1000, // 1 week in milliseconds
     sameSite: "strict",
   });
   try {
@@ -247,64 +255,6 @@ app.post("/registerUser", async (req, res) => {
   }
 });
 
-
-// route til at lave cookies, IKKE IMPLEMENTERET ENDNU
-
-app.get("/cookie", (req, res) => {
-  res.cookie("taste", "chocolate");
-  res.send("Cookie set");
-});
-
-app.get("/protected", (req, res) => {
-  const authCookie = req.cookies.userAuth;
-
-  if (!authCookie) {
-    return res.status(401).send("Ingen authentication cookie.");
-  }
-
-  const customer = customers.find((user) => user.username === authCookie);
-
-  if (!customer) {
-    return res.status(401).send("Ugyldig cookie.");
-  }
-
-  res.send(`Velkommen ${customer.username}`);
-});
-
-
-
-
-// COOKIES!
-
-const sessions = {}; // Simpel in-memory session (kan erstattes med database)
-
-function authenticateSession(req, res, next) {
-  const sessionId = req.cookies.sessionId;
-
-  if (!sessionId || !sessions[sessionId]) {
-    return res.status(401).send({ message: 'Not authenticated' });
-  }
-
-  // Gem brugerdata i request-objektet
-  req.user = sessions[sessionId];
-  next();
-}
-
-app.get('/protected', authenticateSession, (req, res) => {
-  res.send(`Welcome, user with ID: ${req.user.userId}`);
-});
-
-
-app.post('/logout', (req, res) => {
-  const sessionId = req.cookies.sessionId;
-
-  if (sessionId) {
-    delete sessions[sessionId]; // Fjern sessionen fra serveren
-    res.clearCookie('sessionId'); // Fjern cookien
-  }
-
-  res.status(200).send({ message: 'Logged out successfully' });
-});
 
 // 
 app.post('/addProduct', (req, res) => {
