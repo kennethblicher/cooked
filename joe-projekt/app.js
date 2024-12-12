@@ -10,6 +10,8 @@ const bodyParser = require('body-parser');
 const twilio = require("twilio");
 const bcrypt = require('bcrypt');
 const crypto = require('crypto'); // Til at generere en unik sessions-id
+require('dotenv').config();
+
 
 
 
@@ -157,9 +159,10 @@ app.post('/loginUser', (req, res) => {
 
 // Opsætning af 2FA med Twilio
 //Dokumentation https://www.twilio.com/en-us/blog/implement-2fa-twilio-verify-node
-const accountSid = "AC789d4a67dd55c1d86d4a4141cd240361";
-const authToken = "e3638f3c7f71d76b4a811011e0b45214";
-const TWILIO_VERIFY_SERVICE_SID = 'VA462a930d5a0c35aa037f82f56c87d1ff'
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const TWILIO_VERIFY_SERVICE_SID = process.env.TWILIO_VERIFY_SERVICE_SID;
+
 const client = twilio(accountSid, authToken);
 
 // Sender en SMS med en 2FA kode til brugeren
