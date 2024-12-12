@@ -135,11 +135,11 @@ app.post('/loginUser', (req, res) => {
             // Gem sessionen i serverens hukommelse (eller database)
             // Her bruger vi en simpel in-memory session til eksemplet
 
-            res.cookie("userPhone", number, {
+            res.cookie("userPhone", trimmedPhoneNumber, {
               httpOnly: true,
-              secure: true, // Ensure HTTPS in production
+              secure: false, // Do not require HTTPS for the cookie
               maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
-              sameSite: "strict",
+              sameSite: "lax", // Adjust sameSite to "lax" for more flexibility
             });
 
 
@@ -231,9 +231,9 @@ app.post("/registerUser", async (req, res) => {
 
   res.cookie("userPhone", trimmedPhoneNumber, {
     httpOnly: true,
-    secure: true, // Ensure HTTPS in production
-    maxAge: 24 * 60 * 60 * 1000, // 1 week in milliseconds
-    sameSite: "strict",
+    secure: false, // Do not require HTTPS for the cookie
+    maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+    sameSite: "lax", // Adjust sameSite to "lax" for more flexibility
   });
   try {
     const saltRounds = 10;
