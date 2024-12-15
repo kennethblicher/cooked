@@ -274,7 +274,7 @@ select {
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
-  width: 220px;
+  width: 200px;
 }
 
 .product img {
@@ -430,7 +430,7 @@ select {
   flex-direction: column;
   align-items: center; /* Centrerer navn og video i midten */
   text-align: center;
-  width: 400px; /* Fastsæt bredden på videoens container */
+  width: 350px; /* Fastsæt bredden på videoens container */
 }
 
 /* Styling for the video element */
