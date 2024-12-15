@@ -1,9 +1,7 @@
-1.	Denne eksamen består af en 30 minutters individuel mundtlig eksamen baseret på en gruppeopgave på højst 15 sider inklusive figurer, tabeller, diagrammer eller lignende. Forside, abstract, indholdsfortegnelse, litteraturliste og bilag tæller ikke med i sideantallet. Rapporten skal beskrive egenudviklet netværksapplikationer og skal inddrage relevant teori fra fagområdet.
-2.	Formålet med den skriftlige rapport er at beskrive, analysere og diskutere netværksapplikationer, hvori fagets begreber og principper er blevet implementeret. For eksempel, ved at implementere webservere, en load balancer, HTTPS, TCP/IP, kryptering, hashing af passwords, mv. ▪ Netværksapplikationernes funktionalitet er valgfri og skal relatere sig til en virksomhedscase. De kan indeholde funktionalitet for en webshop, chatapplikation, mailservice, videostream, billeddelingstjeneste, betalingsservice eller socialt medie. Den skriftlige rapport og netværksapplikationerne vurderes ud fra hvordan de faglige emner er blevet implementeret.
-3.	De 15 sider i den skriftlige rapport bør indeholde følgende kapitler:
-a.	Introduktion (en kort introduktion af case og netværksapplikationernes formål)
-b.	 Metode (beskriv tilgangen til at analysere netværksapplikationerne ud fra fagområdet)
-c.	Analyse (gå i detaljer med hvordan de mest interessante komponenter er implementeret)
-d.	Diskussion (diskuter resultater fra analysen og relater til relevant teori fra fagområdet)
-e.	Konklusion (opsummer de vigtigste pointer for udvikling af netværksapplikationer)
-4.	Virksomhedscase: Joe and The Juice Præsentationsdag: Torsdag den 12. september klokken 08:50-09:40 Ekstern gæst: Nicolai Schnack, CTO (link til LinkedIn ) Joe and The Juice har en ´global first mentality´ med et in-house tech setup som understøtter organisationen globalt ved at udvikle applikationer selv både deres eget ERP system, et Point of Sales system og en Loyalitets app.
+Denne README fil vil guide dig i at starte vores applikation som en localhost server ved brug af Node.js
+
+Vi vil anbefale at starte med at slette mappen "node-modules", da installationen kan variere på forskellige operative systemer og versioner af Node.js.
+Nu kan du åbne en terminal og navigere til mappen "joe-projekt", hvor du skal køre en "npm install" for at installere "node modules" igen.
+Herefter skal du indsætte de nødvendige nøgler som applikationen skal bruge. Det drejer sig om cloudinary nøgler og twillio nøgler, men alternativt kan funktionaliteten også observeres i vores droplet ved "joe-and-juice.live".
+Nu kan applikationen startes ved at køre "node app.js" i terminalen.
+Problemer opstår ofte med node modulerne "sqlite3" og "bcrypt". Her anbefaler vi at køre en npm uninstall og install på begge moduler.
