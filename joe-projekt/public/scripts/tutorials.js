@@ -9,9 +9,9 @@ app.use(bodyParser.json());
 
 // Cloudinary-konfiguration
 cloudinary.config({
-    cloud_name: "djskwgibn", // Kenneths Cloudinary konto
-    api_key: "815471325232252",
-    api_secret: "QcT6ufvgA1TubTkevgXbGmSa49Y",
+    cloud_name: , 
+    api_key: ,
+    api_secret: ,
     secure: true,
 });
 
