@@ -161,9 +161,9 @@ app.post('/loginUser', (req, res) => {
 
 // Opsætning af 2FA med Twilio
 //Dokumentation https://www.twilio.com/en-us/blog/implement-2fa-twilio-verify-node
-const accountSid = ;
-const authToken = ;
-const TWILIO_VERIFY_SERVICE_SID = ;
+const accountSid = "indsæt nøgle her";
+const authToken = "indsæt nøgle her";
+const TWILIO_VERIFY_SERVICE_SID = "indsæt nøgle her";
 
 const client = twilio(accountSid, authToken);
 
