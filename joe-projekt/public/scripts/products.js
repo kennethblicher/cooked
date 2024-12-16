@@ -8,9 +8,9 @@ app.use(bodyParser.json());
 
 // Cloudinary-konfiguration
 cloudinary.config({
-  cloud_name: , // Kenneths Cloudinary konto
-  api_key: ,
-  api_secret: ,
+  cloud_name: "indsæt nøgle her", // Kenneths Cloudinary konto
+  api_key: "indsæt nøgle her",
+  api_secret: "indsæt nøgle her",
   secure: true,
 });
 
