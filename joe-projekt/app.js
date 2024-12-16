@@ -321,7 +321,7 @@ app.post('/buyProduct', async (req, res) => {
     return res.status(400).send({ message: 'Product name and phone number are required' });
   }
 
-  const messageBody = `Hello customer, your purchase of ${productName} has been confirmed. Thank you for shopping with us!`;
+  const messageBody = `Hello customer, your purchase has been confirmed. Thank you for shopping with us!`;
 
   try {
     // Create and send the SMS using Twilio
