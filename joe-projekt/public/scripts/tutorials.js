@@ -9,9 +9,9 @@ app.use(bodyParser.json());
 
 // Cloudinary-konfiguration
 cloudinary.config({
-    cloud_name: , 
-    api_key: ,
-    api_secret: ,
+    cloud_name: "indsæt nøgle her", 
+    api_key: "indsæt nøgle her",
+    api_secret: "indsæt nøgle her",
     secure: true,
 });
 
